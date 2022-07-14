@@ -12,7 +12,7 @@ export default function Titulo(props){
             </h1>
 
             <hr className={` 
-            border-2 border-purple-500
+            border-2 border-gray-900
             `}/>
 
         </div>
