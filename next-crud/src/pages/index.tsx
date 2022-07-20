@@ -1,24 +1,20 @@
 import Layout from "../components/Layout";
 import Tabela from "../components/Tabela";
-import Cliente from "../core/Cliente";
+import Botao from "../components/Botao";
+import Formulario from "../components/Formulario";
+import useClientes from '../hooks/useClientes';
 
 export default function Home() {
-
-  const clientes = [
-    new Cliente('Gabriel', 23, '1'),
-    new Cliente('Carlos', 20, '2'),
-    new Cliente('Lely', 22, '3'),
-    new Cliente('Duck', 7, '4'),
-    new Cliente('Snoppy', 5, '5')
-  
-  ]
-  function clienteSelecionado(cliente: Cliente){
-    console.log(`Editar ${cliente.nome} `)
-  }
-
-  function clienteExcluido(cliente: Cliente){
-    console.log(`Excluir ${cliente.nome}`)
-  }
+  const {
+      cliente, 
+      clientes,
+      selecionarCliente,
+      excluirCliente, 
+      salvarCliente, 
+      novoCliente,
+      tabelaVisivel,
+      exibirTabela
+    } = useClientes()
 
   return (
     <div className={`
@@ -28,11 +24,31 @@ export default function Home() {
     `}>
 
       <Layout titulo='Cadastro Simples'>
-        <Tabela clientes={clientes} clienteSelecionado={clienteSelecionado}
-        clienteExcluido={clienteExcluido}
-        ></Tabela>
-      </Layout>
+        
+        {tabelaVisivel ? (
+        
+        <div >
+          <div className='flex justify-end'>
+            <Botao className='mb-4 bg-green-500' onClick={novoCliente}>
+              Novo Cliente
+            </Botao>
+          </div>
 
+          <Tabela clientes={clientes} 
+                  clienteSelecionado={selecionarCliente}
+                  clienteExcluido={excluirCliente}
+          />
+        </div>
+
+         ) : (
+
+          <Formulario 
+                      cliente={cliente} 
+                      clienteMudou={salvarCliente}
+                      cancelado={()=> exibirTabela}
+          />
+         )}
+      </Layout>
     </div>
   )
 }
